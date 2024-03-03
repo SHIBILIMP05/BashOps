@@ -32,6 +32,36 @@
 </head>
 
 <body>
+    <style>
+        /* Customize SweetAlert styles */
+        .tj-success-popup {
+            background-color: var(--tj-theme-secondary);
+        }
+    
+        .tj-success-title {
+            color: var(--tj-black-2);
+        }
+    
+        .tj-success-content {
+            color: var(--tj-black-2);
+        }
+    
+        .tj-error-popup {
+            background-color: var(--tj-theme-secondary);
+        }
+    
+        .tj-error-title {
+            color: var(--tj-black-2);
+        }
+    
+        .tj-error-content {
+            color: var(--tj-black-2);
+        }
+        
+        .swal2-content {
+        color: white;
+        }
+    </style>
 
     <!-- Preloader Area Start -->
     <div class="preloader">
@@ -848,15 +878,17 @@
         </div>
     </footer>
     <!-- FOOTER AREA END -->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 
     
     <script>
-
         emailjs.init('C45YJX0zp9H2BlX8Y');
-
+    
         $(document).ready(function() {
             $('#contactForm').submit(function(e) {
                 e.preventDefault(); // Prevent form submission
@@ -871,22 +903,126 @@
                     message: $('#message').val()
                 };
     
-                // Send email using EmailJS
+                // Perform form validation
+                if (formData.fname.trim() === '') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please enter your first name.',
+                        customClass: {
+                            popup: 'tj-error-popup',
+                            title: 'tj-error-title',
+                            content: 'tj-error-content'
+                        }
+                    });
+                    return;
+                }
+    
+                if (formData.email.trim() === '') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please enter your email address.',
+                        customClass: {
+                            popup: 'tj-error-popup',
+                            title: 'tj-error-title',
+                            content: 'tj-error-content'
+                        }
+                    });
+                    return;
+                } else if (!isValidEmail(formData.email)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please enter a valid email address.',
+                        customClass: {
+                            popup: 'tj-error-popup',
+                            title: 'tj-error-title',
+                            content: 'tj-error-content'
+                        }
+                    });
+                    return;
+                }
+    
+                if (formData.phone.trim() === '') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please enter your phone number.',
+                        customClass: {
+                            popup: 'tj-error-popup',
+                            title: 'tj-error-title',
+                            content: 'tj-error-content'
+                        }
+                    });
+                    return;
+                } else if (!isValidPhone(formData.phone)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please enter a valid phone number.',
+                        customClass: {
+                            popup: 'tj-error-popup',
+                            title: 'tj-error-title',
+                            content: 'tj-error-content'
+                        }
+                    });
+                    return;
+                }
+    
+                // If all validation checks pass, send email using EmailJS
                 emailjs.send("service_m54a9os", "template_h3vkx8d", formData)
                     .then(function(response) {
                         console.log("Email sent successfully");
-                        // Optionally, show a success message to the user
-                        alert("Your message has been sent successfully.");
-                    }, function(error) {
+                        // Show success message using SweetAlert
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Your message has been sent successfully.',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            customClass: {
+                                popup: 'tj-success-popup',
+                                title: 'tj-success-title',
+                                content: 'tj-success-content'
+                            }
+                        });
+                    })
+                    .catch(function(error) {
                         console.log("Email sending failed:", error);
-                        // Optionally, show an error message to the user
-                        alert("Oops! Something went wrong.");
+                        // Show error message using SweetAlert
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: 'Please try again later.',
+                            customClass: {
+                                popup: 'tj-error-popup',
+                                title: 'tj-error-title',
+                                content: 'tj-error-content'
+                            }
+                        });
                     });
-    
-                return false;
             });
         });
+    
+        // Function to validate email format
+        function isValidEmail(email) {
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    
+        // Function to validate phone number format
+        function isValidPhone(phone) {
+            var phoneRegex = /^\d{10}$/;
+            return phoneRegex.test(phone);
+        }
     </script>
+    
+    
+    
+    
+
     
 
 

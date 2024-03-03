@@ -184,9 +184,9 @@
                                 <a href="#" class="btn tj-btn-secondary wow fadeInLeft" data-wow-delay="1.5s">Download
                                     CV</a>
                                 <ul class="ul-reset social-icons wow fadeInLeft" data-wow-delay="1.6s">
-                                    <li><a href="https://twitter.com/home?lang=en"><i class="fa-brands fa-twitter"></i></a></li>
+                                    <li><a href="https://twitter.com/Bashops_Tech"><i class="fa-brands fa-twitter"></i></a></li>
                                     <li><a href="https://www.instagram.com/bashops_technologies/"><i class="fa-brands fa-instagram"></i></a></li>
-                                    <li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                                    <li><a href="https://www.linkedin.com/company/bashops-technologies/"><i class="fa-brands fa-linkedin-in"></i></a></li>
                                     <li><a href="https://github.com/BashOps"><i class="fa-brands fa-github"></i></a></li>
                                 </ul>
                             </div>
@@ -727,7 +727,7 @@
                             </div>
 
                             <div class="tj-contact-form">
-                                <form class="contact_form">
+                                <form class="contact_form" id="contactForm">
                                     <div class="row gx-3">
                                         <div class="col-sm-6">
                                             <div class="form_group">
@@ -848,42 +848,47 @@
         </div>
     </footer>
     <!-- FOOTER AREA END -->
-    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+
     
     <script>
 
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('.contact_form');
-    console.log('Form submitted');
-    function sendMsg(e) {
-        e.preventDefault();
-        
-        const fname = document.querySelector('.frstName').value,
-              lname = document.querySelector('.scndName').value,
-              email = document.querySelector('.email').value,
-              phone = document.querySelector('.phone').value,
-              service = document.querySelector('.tj-nice-select').value,
-              message = document.querySelector('.msg').value;
+        emailjs.init('C45YJX0zp9H2BlX8Y');
 
-        console.log(email); // Check if email is correctly selected and retrieved
-
-        Email.send({
-            SecureToken: "e99179ba-848d-4118-a989-cb04d90e6d68",
-            To: 'bashops.technologies@gmail.com',
-            From: email,
-            Subject: "Contact Form Submission",
-            Body: "First Name: " + fname + "<br>Last Name: " + lname + "<br>Email: " + email + "<br>Phone: " + phone + "<br>Service: " + service + "<br>Message: " + message
-        }).then(
-            message => alert(message)
-        );
-    }
-
-    form.addEventListener('submit', sendMsg)
-});
-
+        $(document).ready(function() {
+            $('#contactForm').submit(function(e) {
+                e.preventDefault(); // Prevent form submission
     
+                // Get form data
+                var formData = {
+                    fname: $('#fname').val(),
+                    lname: $('#lname').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val(),
+                    service: $('#service').val(),
+                    message: $('#message').val()
+                };
+    
+                // Send email using EmailJS
+                emailjs.send("service_m54a9os", "template_h3vkx8d", formData)
+                    .then(function(response) {
+                        console.log("Email sent successfully");
+                        // Optionally, show a success message to the user
+                        alert("Your message has been sent successfully.");
+                    }, function(error) {
+                        console.log("Email sending failed:", error);
+                        // Optionally, show an error message to the user
+                        alert("Oops! Something went wrong.");
+                    });
+    
+                return false;
+            });
+        });
     </script>
     
+
 
     <!-- CSS here -->
     <script src="./assets/js/jquery.min.js"></script>

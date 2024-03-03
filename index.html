@@ -905,68 +905,23 @@
     
                 // Perform form validation
                 if (formData.fname.trim() === '') {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Please enter your first name.',
-                        customClass: {
-                            popup: 'tj-error-popup',
-                            title: 'tj-error-title',
-                            content: 'tj-error-content'
-                        }
-                    });
+                    showError('Please enter your first name.');
                     return;
                 }
     
                 if (formData.email.trim() === '') {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Please enter your email address.',
-                        customClass: {
-                            popup: 'tj-error-popup',
-                            title: 'tj-error-title',
-                            content: 'tj-error-content'
-                        }
-                    });
+                    showError('Please enter your email address.');
                     return;
                 } else if (!isValidEmail(formData.email)) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Please enter a valid email address.',
-                        customClass: {
-                            popup: 'tj-error-popup',
-                            title: 'tj-error-title',
-                            content: 'tj-error-content'
-                        }
-                    });
+                    showError('Please enter a valid email address.');
                     return;
                 }
     
                 if (formData.phone.trim() === '') {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Please enter your phone number.',
-                        customClass: {
-                            popup: 'tj-error-popup',
-                            title: 'tj-error-title',
-                            content: 'tj-error-content'
-                        }
-                    });
+                    showError('Please enter your phone number.');
                     return;
                 } else if (!isValidPhone(formData.phone)) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Please enter a valid phone number.',
-                        customClass: {
-                            popup: 'tj-error-popup',
-                            title: 'tj-error-title',
-                            content: 'tj-error-content'
-                        }
-                    });
+                    showError('Please enter a valid phone number.');
                     return;
                 }
     
@@ -975,36 +930,47 @@
                     .then(function(response) {
                         console.log("Email sent successfully");
                         // Show success message using SweetAlert
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Your message has been sent successfully.',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            customClass: {
-                                popup: 'tj-success-popup',
-                                title: 'tj-success-title',
-                                content: 'tj-success-content'
-                            }
-                        });
+                        showSuccess('Your message has been sent successfully.');
+                        // Reset form fields
+                        $('#contactForm')[0].reset();
                     })
                     .catch(function(error) {
                         console.log("Email sending failed:", error);
                         // Show error message using SweetAlert
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Something went wrong!',
-                            footer: 'Please try again later.',
-                            customClass: {
-                                popup: 'tj-error-popup',
-                                title: 'tj-error-title',
-                                content: 'tj-error-content'
-                            }
-                        });
+                        showError('Something went wrong! Please try again later.');
                     });
             });
         });
+    
+        // Function to show error message using SweetAlert
+        function showError(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message,
+                customClass: {
+                    popup: 'tj-error-popup',
+                    title: 'tj-error-title',
+                    content: 'tj-error-content'
+                }
+            });
+        }
+    
+        // Function to show success message using SweetAlert
+        function showSuccess(message) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: message,
+                showConfirmButton: false,
+                timer: 3000,
+                customClass: {
+                    popup: 'tj-success-popup',
+                    title: 'tj-success-title',
+                    content: 'tj-success-content'
+                }
+            });
+        }
     
         // Function to validate email format
         function isValidEmail(email) {
@@ -1018,6 +984,7 @@
             return phoneRegex.test(phone);
         }
     </script>
+    
     
     
     

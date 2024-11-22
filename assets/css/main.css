@@ -393,6 +393,9 @@ a h6:hover {
 
 .section-header p:last-child {
 	margin-bottom: 0;
+	font-size: large;
+	/* text-align: left; */
+	
 }
 
 .owl-carousel .owl-nav button.owl-next,
